@@ -1,0 +1,1 @@
+id,authors,year,venue,peer_reviewed,model_family,model_size_B,peft_method,quant_method,bits,ranks_tested,target_modules,hardware,tasks,language,quality_metric,memory_reported,latency_reported,energy_reported,n_seeds,statistical_test,config_selection_method,key_finding,notes

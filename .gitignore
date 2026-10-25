@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+05_Reproducible_ML_Pipeline/results/*
+!05_Reproducible_ML_Pipeline/results/.gitkeep
+05_Reproducible_ML_Pipeline/checkpoints/
+*.safetensors
+*.bin
+.ipynb_checkpoints/
+.DS_Store

@@ -1,0 +1,35 @@
+# Smoke test: tiny run to verify the pipeline end to end (minutes on a Colab T4).
+experiment: smoke
+model: Qwen/Qwen2.5-0.5B
+
+data:
+  # TODO: replace with a Spanish-language task for the thesis.
+  dataset: nyu-mll/glue
+  subset: sst2
+  text_field: sentence
+  label_field: label
+  num_labels: 2
+  train_split: train
+  eval_split: validation
+  max_train_samples: 500
+  max_eval_samples: 200
+  max_length: 128
+
+adaptation:
+  bits: 4               # 16 = no quantization, 8 = int8, 4 = NF4 (3-bit requires GPTQ/AWQ, not implemented yet)
+  rank: 8
+  alpha_ratio: 2        # lora_alpha = rank * alpha_ratio
+  dropout: 0.05
+  target_modules: attn  # attn | mlp | all_linear
+
+training:
+  epochs: 1
+  batch_size: 8
+  learning_rate: 2.0e-4
+  gradient_checkpointing: false
+
+measurement:
+  latency_samples: 50
+  latency_warmup: 5
+
+seed: 42
