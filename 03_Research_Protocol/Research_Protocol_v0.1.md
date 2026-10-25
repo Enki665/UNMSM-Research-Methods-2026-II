@@ -1,79 +1,76 @@
-# Research Protocol v0.1
+# Research Protocol Outline (v0.1)
 
-PhD in Deep Tech — UNMSM · Session 3 · Edgar Aldair Quispe Huaman
-Source document: *Propuesta de proyecto de investigación* (UNMSM format, Spanish). This protocol reorganizes it into the course's 10 components and incorporates the corrections from Sessions 1–2.
+PhD in Deep Tech · UNMSM · Session 3 · Edgar Aldair Quispe Huaman
 
-> Status legend: ✅ adapted from the proposal · ✏️ rewritten after course feedback · ⏳ TODO
+## 01 · Title
 
----
+A budget-aware method for the efficient adaptation of foundation models through quantization and low-rank adaptation on limited computational infrastructure: the case of Peruvian public institutions.
 
-## 1. Title ✅
+*Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas.*
 
-**ES:** Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas.
-**EN:** A quantization- and low-rank-adaptation-based method for the efficient adaptation of foundation models to improve performance on limited computational infrastructure.
+## 02 · Abstract
 
-## 2. Abstract ⏳
+Peruvian public institutions that process personal and electoral data must adapt and deploy foundation models locally, because Law N° 29733 restricts sending such data to external cloud services, yet they operate with modest and intermittently available GPU capacity. Parameter-efficient fine-tuning and quantization, combined in QLoRA, make adaptation on a single GPU feasible, but these techniques are proposed and validated in fixed, author-chosen configurations on high-end hardware, leaving practitioners to select quantization precision and adapter rank by trial and error. Grounded in Design Science Research (DSR), this doctoral project designs, builds and evaluates a budget-aware configuration-selection method that, given a memory budget, recommends the quantization precision, adapter rank and target modules that maximize the attainable quality. Evaluation proceeds in two phases: a fractional factorial characterization of the configuration space, replicated over five seeds per configuration, that estimates the quality–memory–latency–energy Pareto frontier; and a confirmatory paired comparison of the proposed method against default LoRA, QLoRA and AdaLoRA configurations on held-out models and Spanish-language tasks. The expected contribution is an improvement-type artifact (Gregor & Hevner, 2013), an empirical trade-off frontier and transferable design principles for resource-constrained adaptation.
 
-<!-- TODO (≤250 words): problem → gap → artifact → evaluation design → expected contribution. Write it last. -->
+## 03 · Introduction & Problem Statement ("So What?" Test)
 
-## 3. Problem statement ✅ ✏️
+- **The empirical gap:** full fine-tuning requires storing weights, gradients and optimizer states, which places adaptation out of reach for organizations without high-end GPU clusters. LoRA (Hu et al., 2022), post-training quantization (Dettmers et al., 2022; Frantar et al., 2023; Lin et al., 2024) and their combination in QLoRA (Dettmers et al., 2023) reduce this cost, but they are evaluated in fixed configurations on high-end hardware. There is no systematic characterization of how the quality–cost trade-off varies across the configuration space, nor a formal criterion to select a configuration for a given budget (Ding et al., 2023; Zhu et al., 2024; Mao et al., 2025).
+- **Why care ("So What?"):** institutions such as the JNE cannot outsource adaptation to cloud providers for legal reasons and cannot afford exploratory compute. A validated selection method turns adaptation from trial and error into a reproducible decision, enabling local, legally compliant use of foundation models on existing hardware.
 
-Full fine-tuning of foundation models requires storing weights, gradients and optimizer states, placing adaptation out of reach for organizations without high-end GPU clusters. In domains where data is sensitive or legally restricted (public administration, health, justice, elections), sending data to external services is legally problematic, so **local deployment becomes a requirement that collides with limited infrastructure**.
+## 04 · Literature Review Axes
 
-Parameter-efficient fine-tuning (LoRA; Hu et al., 2022) and quantization (Dettmers et al., 2022; Frantar et al., 2023; Lin et al., 2024), combined in QLoRA (Dettmers et al., 2023), make adaptation on a single GPU possible. However, these techniques are evaluated in **fixed, author-chosen configurations on high-end hardware**. There is no systematic characterization of how the quality–memory–latency–energy trade-off varies across the configuration space, and no formal criterion to select quantization precision and adapter rank for a given compute budget. Practitioners proceed by trial and error.
+1. **Parameter-efficient fine-tuning:** adapters (Houlsby et al., 2019), LoRA (Hu et al., 2022), AdaLoRA (Zhang et al., 2023), DoRA (Liu et al., 2024).
+2. **Quantization of large models:** LLM.int8() (Dettmers et al., 2022), GPTQ (Frantar et al., 2023), SmoothQuant (Xiao et al., 2023), AWQ (Lin et al., 2024).
+3. **Quantization combined with adaptation:** QLoRA (Dettmers et al., 2023) as the immediate antecedent.
+4. **Efficiency and sustainability:** Strubell et al. (2019); Schwartz et al. (2020).
+5. **Compute-optimal allocation:** scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022), transferred here from pre-training to adaptation.
 
-**Peruvian context ✏️:** institutions such as the JNE process personal and electoral data subject to Law N° 29733 and must adapt models locally on modest hardware. <!-- TODO: name the concrete hardware and one concrete Spanish-language task from the institution (e.g., classification of electoral resolutions) to pass the "remove the country name" test. -->
+The systematic review that consolidates these axes is in [04_Literature_Review_PRISMA](../04_Literature_Review_PRISMA/).
 
-**"So what?" (30 seconds) ⏳:** <!-- TODO -->
+## 05 · Research Questions, Objectives & Hypotheses
 
-## 4. Literature review ✅ ⏳
+**General question:** To what extent does a budget-aware adaptation method based on quantization and low-rank adaptation improve performance on limited computational infrastructure, compared with reference adaptation strategies?
 
-Narrative antecedents (from the proposal): Houlsby et al. (2019) adapters; Hu et al. (2022) LoRA; Dettmers et al. (2022) LLM.int8(); Frantar et al. (2023) GPTQ; Lin et al. (2024) AWQ; Dettmers et al. (2023) QLoRA; Zhang et al. (2023) AdaLoRA; Liu et al. (2024) DoRA; surveys by Ding et al. (2023), Zhu et al. (2024), Mao et al. (2025).
+**General objective:** Develop and validate a budget-aware adaptation method that improves the quality–cost trade-off on limited infrastructure with respect to reference strategies.
 
-**Gap:** mature quantization and low-rank techniques exist and their combination is viable, but there is no systematic characterization of the configuration space nor a procedure to select configurations according to the available compute budget.
+| | Specific question | Specific objective | Hypothesis |
+|---|---|---|---|
+| SO1 | What is the effect of quantization precision on quality, memory and latency? | Characterize experimentally the effect of quantization precision. | HE1: precision has a significant effect on quality and memory, with a threshold below which degradation is no longer bounded. |
+| SO2 | How does the optimal rank and target-module configuration vary with the memory budget? | Determine the functional relation between memory budget and optimal adapter configuration. | HE2: the optimal configuration depends significantly on the memory budget and can be characterized by an allocation function. |
+| SO3 | Does automatic configuration selection improve the performance–cost ratio over default configurations? | Design an automatic selection procedure from the empirical characterization. | HE3: the procedure achieves a significantly better performance–cost ratio than default configurations under the same budget. |
+| SO4 | Does the method generalize across model families, task domains and hardware classes? | Validate the method against reference strategies on held-out tasks, models and hardware. | HE4: the improvement remains significant across model families, domains and hardware classes. |
 
-⏳ To be replaced by the systematic review in [04_Literature_Review_PRISMA](../04_Literature_Review_PRISMA/).
+**Construct definition:** performance is a vector (quality, peak memory, latency, energy). A configuration improves on another when it Pareto-dominates it; scalar comparisons use quality per GiB of peak memory and quality per Wh.
 
-## 5. Research questions and hypotheses ✅
+**Baselines:** LoRA with its original default configuration, QLoRA with its original default configuration, and AdaLoRA.
 
-**General question:** To what extent does an efficient adaptation method based on quantization and low-rank adaptation improve performance on limited computational infrastructure, compared with reference adaptation strategies?
+## 06 · Methodology
 
-| | Question | Hypothesis |
-|---|---|---|
-| 1 | Effect of quantization precision on quality, memory and latency? | HE1: precision has a significant effect on quality and memory, with a threshold below which degradation is no longer bounded. |
-| 2 | How does the optimal rank / target-module configuration vary with the memory budget? | HE2: the optimal configuration depends significantly on the memory budget, and the dependence can be characterized by an allocation function. |
-| 3 | Does automatic configuration selection improve the performance–cost ratio over default configurations? | HE3: the proposed procedure achieves a significantly better performance–cost ratio than defaults under the same budget. |
-| 4 | Does the method generalize across model family, task domain and hardware class? | HE4: the improvement remains significant across model families, domains and hardware classes. |
+- **Paradigm:** Design Science (Hevner et al., 2004), with positivist experimentation as the rigor cycle.
+- **Process:** DSR methodology of Peffers et al. (2007): problem identification, objectives, design and development, demonstration, evaluation and communication.
+- **Unit of analysis:** the training run, defined as the adaptation of one model under one configuration followed by evaluation on a test set.
+- **Phase I, characterization:** fractional factorial design over model family (1B–13B open models), quantization precision (16, 8, 4 and 3 bits), adapter rank (2–64), target modules and task, with five seeds per configuration and randomized execution order. Response-surface methodology and Pareto-frontier analysis.
+- **Phase II, confirmatory evaluation:** the selection method against the baselines on tasks and models not used in Phase I, under identical memory budgets.
+- **Statistical analysis:** paired comparisons across seeds, tasks and models using linear mixed-effects models (seed and task as random effects) and the Wilcoxon signed-rank test on pooled pairs, with bootstrap 95% confidence intervals, effect sizes and Holm correction for multiple comparisons. Because five paired seeds alone cannot reach p < 0.05 in a two-sided Wilcoxon test, inference pools pairs across tasks and models.
+- **Measurement:** accuracy, macro-F1 and perplexity; peak memory during training and inference (GiB); latency per query after warm-up (ms); throughput (tokens/s); energy from GPU telemetry (Wh).
+- **Reproducibility:** pinned library versions, fixed seeds, full configuration and environment logged per run, public code in [05_Reproducible_ML_Pipeline](../05_Reproducible_ML_Pipeline/).
 
-✏️ **Construct definition (required):** "performance" is a vector (quality, peak memory, latency, energy). A configuration *improves* on another when it **Pareto-dominates** it, or, for single-number comparisons, by **quality per GiB** and **quality per Wh**. <!-- TODO: choose and justify one primary metric. -->
+## 07 · Ethics, Governance & Data Protection
 
-✏️ **Baselines (must be named):** (i) LoRA with the original defaults (r = 8, attention projections only); (ii) QLoRA defaults (NF4, r = 64, all linear layers); (iii) AdaLoRA. <!-- TODO: verify default values against the original papers before citing. -->
+- **Scientific integrity:** compliance with CONCYTEC's National Code of Scientific Integrity; pre-specified hypotheses and analysis plan to prevent p-hacking, HARKing and selective reporting; all runs reported, including failed ones.
+- **Data protection:** Phases I and II use open models and public benchmarks without personal data. Any institutional data is processed only with written authorization, anonymized before analysis, processed locally, and handled under Law N° 29733 and its Regulation.
+- **AI regulation:** alignment with Law N° 31814, which promotes the use of artificial intelligence in Peru, and its Regulation.
+- **Fairness:** disaggregated evaluation to test whether low-bit quantization degrades Spanish-language performance more than English performance.
+- **Sustainability:** energy consumption reported as an outcome variable.
+- **AI-use declaration:** generative AI was used for structuring, preliminary drafting and code scaffolding; methodological decisions are the author's own.
 
-## 6. Methods ✏️
+## 08 · Expected Results
 
-- **Paradigm:** Design Science (Hevner et al., 2004), with positivist experimentation as the rigor cycle. See [01](../01_Paradigm_Justification/).
-- **Method:** DSR following Peffers et al. (2007): problem identification → objectives → design & development → demonstration → evaluation → communication. See [02](../02_Method_Fit_Matrix/).
-- **Phase I (characterization):** fractional factorial design over {model family, quantization 16/8/4/3 bits, rank 2–64, target modules, task}. Five seeds per configuration. Response-surface methodology and Pareto-frontier analysis.
-- **Phase II (confirmatory):** the selection method vs. baselines on **held-out tasks and models**; run order randomized.
-- **Unit of analysis:** the training run (model adapted under one configuration + evaluated on a test set).
-- **Statistics ✏️:** paired comparisons across seeds and tasks using the Wilcoxon signed-rank test or linear mixed-effects models (seed and task as random effects), with bootstrap confidence intervals and effect sizes. Holm or Bonferroni correction for multiple comparisons. McNemar is used only as a *complementary* per-run test on shared test instances, since on its own it ignores seed variance.
-- **Power caveat ✏️:** with only 5 paired seeds, a two-sided Wilcoxon test can never reach p < 0.05 (its minimum p is 0.0625). Comparisons must therefore pool pairs across tasks and models, use a mixed-effects model, or raise the number of seeds. The power analysis must account for this.
-- **Measurement:** quality (accuracy/F1, perplexity), peak memory (training and inference, GiB), latency (ms per query, after warm-up), throughput (tokens/s), energy (Wh, via GPU telemetry).
-- **Reproducibility:** pinned library versions, fixed seeds, full configuration logged per run, code in [05](../05_Reproducible_ML_Pipeline/).
-- **Note on 3-bit:** bitsandbytes supports 4/8-bit only; 3-bit requires GPTQ or AWQ. <!-- TODO: decide the quantization backend per precision level. -->
+1. A validated budget-aware configuration-selection method released as open-source software.
+2. An empirical quality–memory–latency–energy Pareto frontier for quantized low-rank adaptation on limited hardware.
+3. Transferable design principles for resource-constrained adaptation, published in target venues (MLSys, TMLR, EMNLP Findings).
 
-## 7. Ethics and data management ⏳ ✏️
-
-- Phase I/II use **open models and public benchmarks**; no personal data is processed.
-- If institutional data (e.g., JNE) is added: written authorization, anonymization before processing, local-only processing, compliance with Law N° 29733 and its regulation, and a data management plan aligned with FAIR and CONCYTEC guidance.
-- **Bias angle (to be developed in Unit III):** check whether low-bit quantization degrades Spanish-language performance more than English performance.
-- Energy reporting as a sustainability commitment (Strubell et al., 2019; Schwartz et al., 2020).
-
-## 8. Expected results ⏳
-
-<!-- TODO: expected Pareto frontier shape, expected precision threshold (HE1), expected form of the allocation function (HE2), what result would falsify each hypothesis. -->
-
-## 9. Timeline ✅
+## 09 · Timeline & Budget
 
 | Activity | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 |
 |---|---|---|---|---|---|---|---|---|
@@ -83,16 +80,33 @@ Narrative antecedents (from the proposal): Houlsby et al. (2019) adapters; Hu et
 | Phase I: characterization | | | X | X | | | | |
 | Phase I statistical analysis | | | | X | X | | | |
 | First paper | | | | | X | | | |
-| Design of selection method | | | | | X | X | | |
+| Design of the selection method | | | | | X | X | | |
 | Phase II: confirmatory validation | | | | | | X | X | |
 | Second paper | | | | | | | X | |
 | Thesis writing | | | | | | | X | X |
 | Defense | | | | | | | | X |
 
-⏳ Risks to include (Session 3): GPU availability, ethics approval time if institutional data is used, and a slower-than-planned Phase I.
+- **Risk buffer:** GPU availability, slower-than-planned Phase I and ethics approval if institutional data is added.
+- **Budget:** S/ 47,520 (workstation, cloud compute, storage, bibliography, dissemination, editing and a 10% contingency), financed through UNMSM competitive funds and national science and technology calls.
 
-**Budget:** S/ 47,520 (see the proposal).
+## 10 · Core Bibliography
 
-## 10. Bibliography
-
-See the proposal's reference list. Additions from the course: Gregor & Hevner (2013); Peffers et al. (2007); Bean et al. (2025), *Measuring What Matters* (NeurIPS 2025).
+- Dettmers, T., Lewis, M., Belkada, Y., & Zettlemoyer, L. (2022). LLM.int8(): 8-bit matrix multiplication for transformers at scale. *NeurIPS 35*.
+- Dettmers, T., Pagnoni, A., Holtzman, A., & Zettlemoyer, L. (2023). QLoRA: Efficient finetuning of quantized LLMs. *NeurIPS 36*.
+- Ding, N., et al. (2023). Parameter-efficient fine-tuning of large-scale pre-trained language models. *Nature Machine Intelligence, 5*(3), 220–235.
+- Frantar, E., Ashkboos, S., Hoefler, T., & Alistarh, D. (2023). GPTQ: Accurate post-training quantization for generative pre-trained transformers. *ICLR 2023*.
+- Gregor, S., & Hevner, A. R. (2013). Positioning and presenting design science research for maximum impact. *MIS Quarterly, 37*(2), 337–355.
+- Hevner, A. R., March, S. T., Park, J., & Ram, S. (2004). Design science in information systems research. *MIS Quarterly, 28*(1), 75–105.
+- Hoffmann, J., et al. (2022). Training compute-optimal large language models. *arXiv:2203.15556*.
+- Houlsby, N., et al. (2019). Parameter-efficient transfer learning for NLP. *ICML 2019*, 2790–2799.
+- Hu, E. J., et al. (2022). LoRA: Low-rank adaptation of large language models. *ICLR 2022*.
+- Kaplan, J., et al. (2020). Scaling laws for neural language models. *arXiv:2001.08361*.
+- Lin, J., et al. (2024). AWQ: Activation-aware weight quantization for on-device LLM compression and acceleration. *MLSys 2024*.
+- Liu, S.-Y., et al. (2024). DoRA: Weight-decomposed low-rank adaptation. *ICML 2024*.
+- Mao, Y., et al. (2025). A survey on LoRA of large language models. *Frontiers of Computer Science, 19*(7), 197605.
+- Peffers, K., Tuunanen, T., Rothenberger, M. A., & Chatterjee, S. (2007). A design science research methodology for information systems research. *Journal of Management Information Systems, 24*(3), 45–77.
+- Schwartz, R., Dodge, J., Smith, N. A., & Etzioni, O. (2020). Green AI. *Communications of the ACM, 63*(12), 54–63.
+- Strubell, E., Ganesh, A., & McCallum, A. (2019). Energy and policy considerations for deep learning in NLP. *ACL 2019*, 3645–3650.
+- Xiao, G., et al. (2023). SmoothQuant: Accurate and efficient post-training quantization for large language models. *ICML 2023*.
+- Zhang, Q., et al. (2023). AdaLoRA: Adaptive budget allocation for parameter-efficient fine-tuning. *ICLR 2023*.
+- Zhu, X., Li, J., Liu, Y., Ma, C., & Wang, W. (2024). A survey on model compression for large language models. *TACL, 12*, 1556–1577.

@@ -6,8 +6,6 @@ PhD in Deep Tech — UNMSM · Session 1 · Edgar Aldair Quispe Huaman
 
 Peruvian public institutions that process personal or electoral data, such as the Jurado Nacional de Elecciones (JNE), cannot send that data to external cloud LLM services: Law N° 29733 restricts its processing, so foundation models must be adapted and deployed locally. These institutions typically have modest, intermittently available GPU capacity, far below the infrastructure on which QLoRA-style methods were proposed and validated. Practitioners therefore choose quantization precision and adapter rank by trial and error, wasting scarce compute and often reaching suboptimal configurations.
 
-<!-- TODO: name the actual hardware available (GPU model, VRAM) to make the context concrete. -->
-
 ## 2. Research question
 
 How can a configuration-selection method for efficient adaptation (quantization + low-rank adaptation) be designed so that, given a fixed memory budget on limited hardware, it reaches a better quality–cost trade-off than the default configurations used in the literature, and how transferable are its design principles across model families, Spanish-language tasks and hardware classes?

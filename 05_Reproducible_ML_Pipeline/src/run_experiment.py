@@ -1,10 +1,3 @@
-"""Run ONE experimental run: adapt a model under one configuration, evaluate it,
-and log quality + cost metrics. The run is the unit of analysis.
-
-Usage:
-    python src/run_experiment.py --config configs/smoke.yaml
-    python src/run_experiment.py --config configs/smoke.yaml --set adaptation.rank=16 seed=22
-"""
 from __future__ import annotations
 
 import argparse
@@ -33,7 +26,6 @@ TARGET_MODULE_PRESETS = {
 }
 
 
-# --------------------------------------------------------------------------- config
 def load_config(path: str | Path) -> dict:
     with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
@@ -55,7 +47,6 @@ def apply_overrides(cfg: dict, overrides: list[str] | None) -> dict:
     return cfg
 
 
-# --------------------------------------------------------------------------- reproducibility
 def set_all_seeds(seed: int) -> None:
     import torch
     from transformers import set_seed
@@ -68,7 +59,7 @@ def set_all_seeds(seed: int) -> None:
     os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
-    # bitsandbytes kernels are not fully deterministic; warn instead of failing.
+
     torch.use_deterministic_algorithms(True, warn_only=True)
 
 
@@ -101,7 +92,6 @@ def environment_info() -> dict:
     return info
 
 
-# --------------------------------------------------------------------------- energy
 class EnergyMeter:
     """GPU energy via NVML cumulative counter (Volta or newer). Returns None if unavailable."""
 
@@ -112,7 +102,7 @@ class EnergyMeter:
             pynvml.nvmlInit()
             self._nvml = pynvml
             self.handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-            pynvml.nvmlDeviceGetTotalEnergyConsumption(self.handle)  # probe support
+            pynvml.nvmlDeviceGetTotalEnergyConsumption(self.handle)
         except Exception:
             self.handle = None
 
@@ -125,10 +115,9 @@ class EnergyMeter:
     def wh(start_mj, end_mj):
         if start_mj is None or end_mj is None:
             return None
-        return (end_mj - start_mj) / 3.6e6  # mJ -> Wh
+        return (end_mj - start_mj) / 3.6e6
 
 
-# --------------------------------------------------------------------------- model
 def build_model(cfg: dict):
     import torch
     from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
@@ -145,7 +134,7 @@ def build_model(cfg: dict):
             bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=compute_dtype,
-            llm_int8_skip_modules=["score", "classifier"],  # keep the classification head in full precision
+            llm_int8_skip_modules=["score", "classifier"],
         )
     elif bits == 8:
         quant_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_skip_modules=["score", "classifier"])
@@ -182,7 +171,6 @@ def build_model(cfg: dict):
     return model, tokenizer, trainable, total
 
 
-# --------------------------------------------------------------------------- data
 def load_data(cfg: dict, tokenizer):
     from datasets import load_dataset
 
@@ -204,7 +192,6 @@ def load_data(cfg: dict, tokenizer):
     return train.map(tok, batched=True, remove_columns=cols), evald.map(tok, batched=True, remove_columns=cols), evald
 
 
-# --------------------------------------------------------------------------- measurement
 def measure_latency(model, tokenizer, raw_eval, cfg) -> tuple[float, float]:
     """Mean and std latency (ms) per single query, after warm-up."""
     import torch
@@ -239,7 +226,6 @@ def reset_peak_mem() -> None:
         torch.cuda.reset_peak_memory_stats()
 
 
-# --------------------------------------------------------------------------- main
 def run(cfg: dict) -> dict:
     import torch
     from sklearn.metrics import accuracy_score, f1_score
@@ -285,7 +271,7 @@ def run(cfg: dict) -> dict:
         compute_metrics=compute_metrics,
     )
 
-    # ---- training cost
+
     reset_peak_mem()
     e0, t0 = energy.read_mj(), time.perf_counter()
     trainer.train()
@@ -293,7 +279,7 @@ def run(cfg: dict) -> dict:
     train_energy_wh = EnergyMeter.wh(e0, energy.read_mj())
     train_peak = peak_mem_gib()
 
-    # ---- quality + inference cost
+
     reset_peak_mem()
     e1 = energy.read_mj()
     metrics = trainer.evaluate()

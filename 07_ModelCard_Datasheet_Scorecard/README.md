@@ -1,3 +1,3 @@
 # 07_ModelCard_Datasheet_Scorecard
 
-See the versioned file(s) in this folder. Status is tracked in the root README.
+Documentación responsable del proyecto (Sesión 7): Model Card de los adaptadores, Datasheet del conjunto de datos y scorecard de reproducibilidad e IA responsable.

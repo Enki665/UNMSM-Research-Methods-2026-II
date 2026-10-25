@@ -24,7 +24,6 @@ Given a fixed memory budget on limited hardware, can a budget-aware method for s
 | **Gate (E ≤ 2 eliminates)** | | Survives | Survives | **ELIMINATED** | |
 | **Weighted score (/5)** | 100 | **4.45** | 3.55 | — | |
 
-<!-- TODO: review every score and weight; you must be able to defend each cell orally. -->
 
 ## 4. Weights: highest and lowest
 

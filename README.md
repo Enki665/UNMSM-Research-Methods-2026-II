@@ -1,29 +1,23 @@
 # UNMSM-Research-Methods-2026-II
 
-**Course:** Research Methods for AI & Advanced Technologies (R6S10714) — PhD in Deep Tech, UNMSM · Semester 2026-II
-**Instructor:** Dr. Loveleen Gaur
-**Student:** Edgar Aldair Quispe Huaman
+Métodos de Investigación e Integridad Científica en Inteligencia Artificial y Tecnologías Avanzadas · Doctorado en Deep Tech con enfoque en Inteligencia Artificial y Tecnologías Emergentes · Universidad Nacional Mayor de San Marcos · Código del curso R6S10714 · 8 créditos · 48 horas lectivas · Semestre 2026-II · Docente: Dra. Loveleen Gaur
 
-## Thesis topic
+**Doctorando:** Edgar Aldair Quispe Huaman
 
-> *Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas*
->
-> A budget-aware method for selecting quantization precision, LoRA rank and target modules when adapting foundation models on limited hardware, motivated by Peruvian public institutions (e.g., JNE) that must deploy locally under Law N° 29733.
+**Tesis:** Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas.
 
-**Paradigm:** Design Science (positivist experimentation as the rigor cycle) · **Method:** DSR with factorial experimental evaluation
+## Contenido
 
-## Deliverables
+| Carpeta | Descripción |
+|---|---|
+| [01_Paradigm_Justification](01_Paradigm_Justification/) | Declaración de justificación del paradigma de investigación: Design Science con evaluación experimental positivista. |
+| [02_Method_Fit_Matrix](02_Method_Fit_Matrix/) | Matriz de ajuste de método (E.D.F.C.V.) con regla de eliminación, ponderaciones y método ganador. |
+| [03_Research_Protocol](03_Research_Protocol/) | Esquema del protocolo de investigación v0.1 con sus diez componentes. |
+| [04_Literature_Review_PRISMA](04_Literature_Review_PRISMA/) | Protocolo de revisión sistemática PRISMA 2020, cadenas de búsqueda, criterios de elegibilidad y análisis de brechas. |
+| [05_Reproducible_ML_Pipeline](05_Reproducible_ML_Pipeline/) | Pipeline reproducible de adaptación con cuantización y LoRA, con registro de calidad, memoria, latencia y energía por corrida. |
+| [06_Reproducibility_Audit_and_Best_Practices](06_Reproducibility_Audit_and_Best_Practices/) | Auditoría de reproducibilidad del artículo QLoRA y buenas prácticas aplicadas al pipeline propio. |
+| [07_ModelCard_Datasheet_Scorecard](07_ModelCard_Datasheet_Scorecard/) | Model Card, Datasheet for Datasets y scorecard de reproducibilidad e IA responsable. |
 
-| # | Folder | Session | Deliverable | Status |
-|---|---|---|---|---|
-| 1 | [01_Paradigm_Justification](01_Paradigm_Justification/) | 1 | Research Paradigm Justification Statement | Draft v1.0 |
-| 2 | [02_Method_Fit_Matrix](02_Method_Fit_Matrix/) | 2 | Method-Fit Matrix (E.D.F.C.V. + gate rule) | Draft v1.0 |
-| 3 | [03_Research_Protocol](03_Research_Protocol/) | 3 | Research Protocol v0.1 | Draft v0.1 |
-| 4 | [04_Literature_Review_PRISMA](04_Literature_Review_PRISMA/) | 4 | Mini systematic review (PRISMA 2020) + gap analysis | Protocol only — search pending |
-| 5 | [05_Reproducible_ML_Pipeline](05_Reproducible_ML_Pipeline/) | 5 | Reproducible ML pipeline (code) | Code skeleton — not yet run |
-| 6 | [06_Reproducibility_Audit_and_Best_Practices](06_Reproducibility_Audit_and_Best_Practices/) | 6–7 | Reproducibility audit report | Template |
-| 7 | [07_ModelCard_Datasheet_Scorecard](07_ModelCard_Datasheet_Scorecard/) | 7 | Model Card + Datasheet for Datasets + scorecard | Template |
+## Declaración de uso de IA
 
-## AI use statement
-
-See [AI_USE_STATEMENT.md](AI_USE_STATEMENT.md).
+Se utilizó IA generativa (Claude, Anthropic) como apoyo para la estructuración del repositorio, la redacción preliminar y el andamiaje de código, conforme a la política de uso de IA del curso. Las decisiones metodológicas, puntuaciones y justificaciones fueron revisadas y asumidas por el autor.

@@ -1,10 +1,3 @@
-"""Aggregate runs across seeds, compute the quality-memory Pareto frontier,
-and run a paired comparison between two configurations.
-
-Usage:
-    python src/analyze.py
-    python src/analyze.py --compare "bits=4,rank=8,target_modules=attn" "bits=4,rank=64,target_modules=all_linear"
-"""
 from __future__ import annotations
 
 import argparse
@@ -79,7 +72,6 @@ def paired_compare(df: pd.DataFrame, a: str, b: str) -> None:
         res = stats.wilcoxon(diff)
         print(f"  Wilcoxon W = {res.statistic:.3f}, p = {res.pvalue:.4f}")
         if len(common) < 6:
-            # With n=5 pairs the smallest attainable two-sided p is 0.0625: significance at 0.05 is impossible.
             print("  WARNING: n < 6 paired seeds -> two-sided Wilcoxon cannot reach p < 0.05. "
                   "Pool pairs across tasks/models or use a mixed-effects model.")
     else:

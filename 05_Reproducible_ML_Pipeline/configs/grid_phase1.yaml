@@ -1,18 +1,13 @@
-# Phase I characterization grid. Every combination x every seed = one run (unit of analysis).
-# Full factorial shown here; replace with a fractional design before running at scale.
 base_config: configs/smoke.yaml
 
 grid:
   model:
     - Qwen/Qwen2.5-0.5B
-    # - Qwen/Qwen2.5-1.5B
-    # - meta-llama/Llama-3.2-1B   # gated: requires accepting the license on Hugging Face
   adaptation.bits: [16, 8, 4]
   adaptation.rank: [2, 8, 32, 64]
   adaptation.target_modules: [attn, all_linear]
 
 seeds: [11, 22, 33, 44, 55]
 
-# Randomize execution order to control thermal drift / system state.
 shuffle_order: true
 shuffle_seed: 2026

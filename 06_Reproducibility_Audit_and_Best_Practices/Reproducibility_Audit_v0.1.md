@@ -1,55 +1,53 @@
-# Reproducibility Audit Report (v0.1)
+# Reproducibility Audit and Best Practices (v0.1)
 
-PhD in Deep Tech — UNMSM · Sessions 6–7 · Edgar Aldair Quispe Huaman
+PhD in Deep Tech · UNMSM · Sessions 6–7 · Edgar Aldair Quispe Huaman
 
-> Status: **template**. Fill it in after attempting to reproduce the target paper.
+## 1. Audited Paper
 
-## 1. Audited paper
+**Dettmers, T., Pagnoni, A., Holtzman, A., & Zettlemoyer, L. (2023). QLoRA: Efficient finetuning of quantized LLMs. NeurIPS 36.**
 
-- **Paper:** ⏳ (suggested: Dettmers et al., 2023, *QLoRA*, NeurIPS — the direct antecedent of the thesis)
-- **Claim audited:** ⏳ (one specific, quantitative claim, e.g., "4-bit NF4 + LoRA matches 16-bit full fine-tuning on task X")
-- **Artifacts released by the authors:** code ☐ · weights ☐ · data ☐ · configs ☐ · logs ☐
+Selected because it is the immediate antecedent of the thesis: it combines 4-bit quantization of a frozen base model with low-rank adapters.
 
-## 2. Reproduction setup
+## 2. Claims Audited
 
-| Item | Original paper | My reproduction |
+| ID | Claim | Type |
 |---|---|---|
-| Model | | |
-| Dataset / split | | |
-| Hardware | | |
-| Library versions | | |
-| Hyperparameters | | |
-| Seeds (n) | | |
+| C1 | A 65B-parameter model can be fine-tuned on a single 48 GB GPU. | Cost |
+| C2 | 4-bit NormalFloat (NF4) with double quantization preserves the performance of 16-bit fine-tuning. | Quality |
+| C3 | The resulting Guanaco models are competitive with ChatGPT on the Vicuna benchmark. | Quality |
 
-## 3. Results
+## 3. Documentary Audit
 
-| Metric | Reported | Reproduced (mean ± std, n seeds) | Within CI? |
-|---|---|---|---|
-| | | | |
+| Criterion | Assessment |
+|---|---|
+| Code released | Yes, public repository with training scripts |
+| Trained adapters released | Yes, Guanaco adapters on Hugging Face |
+| Hardware reported | Yes, single-GPU memory requirements |
+| Datasets identified | Yes, public instruction-tuning datasets |
+| Evaluation instrument | C3 relies on GPT-4 as judge and on Elo tournaments, an LLM used as a measurement instrument |
+| Reproducibility risk | High for C3: the judge model is non-deterministic and its version changes over time, so the instrument cannot be pinned; low to medium for C1 and C2, which rely on deterministic metrics and released code |
 
-**Verdict:** ☐ Reproduced · ☐ Partially reproduced · ☐ Not reproduced. Explanation: ⏳
+## 4. Threats to Validity Identified
 
-## 4. Experimental-practice checklist (Session 6)
+1. **LLM as instrument (C3):** construct validity, reliability without validity, non-determinism and versioning, and circularity apply to GPT-4-as-judge evaluation, as discussed in Session 2.
+2. **Hardware dependence (C1):** the memory claim depends on paged optimizers and on the specific GPU; it does not transfer automatically to consumer GPUs with less memory.
+3. **Configuration choice:** precision, rank and target modules are fixed by the authors; the paper does not characterize how quality varies across the configuration space under different budgets, which is the gap addressed by this thesis.
 
-| Practice | Original paper | My pipeline (05) |
-|---|---|---|
-| Train/validation/test split documented, no leakage | ⏳ | ⏳ |
-| Multiple seeds; variance reported | ⏳ | ✅ 5 seeds |
-| Statistical test for comparisons | ⏳ | ✅ Wilcoxon + bootstrap CI |
-| Effect sizes reported | ⏳ | ⏳ |
-| Baselines tuned with the same budget | ⏳ | ⏳ |
-| Ablations isolate each component | ⏳ | ⏳ |
-| Construct validity of the benchmark argued (Bean et al., 2025) | ⏳ | ⏳ |
-| Library versions pinned | ⏳ | ✅ requirements.txt + per-run log |
-| Hardware and compute cost reported | ⏳ | ✅ memory, latency, energy |
-| Code and configs released | ⏳ | ✅ this repository |
+## 5. Reproduction Plan
 
-## 5. Threats to reproducibility found
+Reproduction of C2 at reduced scale: Qwen2.5-0.5B adapted with LoRA under 16-bit, 8-bit and 4-bit NF4, five seeds per configuration, comparing macro-F1 and peak memory with the pipeline in [05_Reproducible_ML_Pipeline](../05_Reproducible_ML_Pipeline/). The claim is reproduced if the 4-bit configuration falls within the 95% bootstrap confidence interval of the 16-bit configuration.
 
-1. ⏳
-2. ⏳
-3. ⏳
+## 6. Best Practices Applied to the Own Pipeline
 
-## 6. Best practices adopted in my own pipeline as a result
-
-⏳
+| Practice | Implementation |
+|---|---|
+| Unit of analysis declared | The training run |
+| Multiple seeds | Five seeds per configuration |
+| Variance reported | Mean, standard deviation and bootstrap 95% confidence interval |
+| Statistical testing | Paired Wilcoxon signed-rank test and pooled comparisons |
+| Randomized execution order | Fixed shuffle seed for the grid |
+| Pinned environment | requirements.txt and library versions logged per run |
+| Full configuration logged | One JSON file per run with configuration, environment and metrics |
+| Cost reported | Peak memory, latency and energy per run |
+| Failed runs reported | Out-of-memory and other failures logged as data |
+| Code and configuration released | This public repository |

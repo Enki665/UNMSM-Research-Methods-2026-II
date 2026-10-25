@@ -1,9 +1,3 @@
-"""Expand a grid of configurations x seeds and run each as an independent run.
-
-Usage:
-    python src/run_grid.py --grid configs/grid_phase1.yaml            # run everything
-    python src/run_grid.py --grid configs/grid_phase1.yaml --dry-run  # only list the runs
-"""
 from __future__ import annotations
 
 import argparse
@@ -47,7 +41,6 @@ def main():
         try:
             run(apply_overrides(base, overrides))
         except Exception:
-            # Log and continue: a failed run (e.g., OOM) is itself a data point about the budget.
             traceback.print_exc()
             with open(ROOT / "results" / "failed_runs.log", "a", encoding="utf-8") as f:
                 f.write(" ".join(overrides) + "\n")

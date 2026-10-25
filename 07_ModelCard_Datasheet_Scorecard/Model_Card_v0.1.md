@@ -1,40 +1,40 @@
-# Model Card (v0.1) — following Mitchell et al. (2019)
+# Model Card (v0.1)
 
-> Status: **template** for the adapted models produced by the pipeline in [05](../05_Reproducible_ML_Pipeline/). One card per released adapter.
+PhD in Deep Tech · UNMSM · Session 7 · Edgar Aldair Quispe Huaman · Format: Mitchell et al. (2019)
 
-## Model details
-- **Developer:** Edgar Aldair Quispe Huaman (UNMSM, PhD in Deep Tech)
-- **Base model:** ⏳ (e.g., Qwen/Qwen2.5-0.5B) · **Base model license:** ⏳
-- **Adaptation:** LoRA (rank ⏳, target modules ⏳) on a ⏳-bit quantized base
-- **Version / date:** ⏳ · **Code commit:** ⏳
-- **License of the adapter:** ⏳
+## Model Details
 
-## Intended use
-- **Primary use:** research on efficient adaptation under limited hardware.
-- **Out of scope:** production decisions on people (e.g., electoral, legal or administrative decisions) without further validation.
+| Field | Value |
+|---|---|
+| Developer | Edgar Aldair Quispe Huaman, PhD in Deep Tech, UNMSM |
+| Base model | Qwen/Qwen2.5-0.5B (Apache 2.0) |
+| Adaptation | LoRA adapters trained on a base model quantized at 16, 8 or 4 bits (NF4) |
+| Configurations | Rank 2–64; target modules: attention projections or all linear layers |
+| Task | Binary sentence classification (pipeline validation stage) |
+| Code | [05_Reproducible_ML_Pipeline](../05_Reproducible_ML_Pipeline/) |
+
+## Intended Use
+
+- **Primary use:** research on the quality–cost trade-off of efficient adaptation under limited hardware.
+- **Out of scope:** automated decisions about people, including electoral, legal or administrative decisions.
 
 ## Factors
-- Language (Spanish vs. English), text domain, quantization level, hardware class.
+
+Quantization precision, adapter rank, target modules, language of the task and hardware class.
 
 ## Metrics
-- Quality: accuracy, macro-F1 (mean ± std over 5 seeds, bootstrap 95% CI)
-- Cost: peak memory (GiB), latency (ms/query), energy (Wh)
 
-## Evaluation data
-- ⏳ dataset, split, size, preprocessing (see the Datasheet)
+- **Quality:** accuracy and macro-F1, reported as mean ± standard deviation over five seeds with bootstrap 95% confidence intervals.
+- **Cost:** peak memory during training and inference (GiB), latency per query (ms) and energy (Wh).
 
-## Training data
-- ⏳ (see the Datasheet)
+## Evaluation and Training Data
 
-## Quantitative analyses
-| Configuration | Accuracy | Macro-F1 | Peak mem (GiB) | Latency (ms) | Energy (Wh) |
-|---|---|---|---|---|---|
-| ⏳ | | | | | |
+SST-2 (GLUE) for pipeline validation; Spanish-language tasks in the thesis experiments. See [Datasheet_v0.1.md](Datasheet_v0.1.md).
 
-**Disaggregated results:** ⏳ (e.g., by language or subgroup, to check whether quantization degrades some groups more)
+## Ethical Considerations
 
-## Ethical considerations
-- No personal data in the public benchmarks used. If institutional data is used: Law N° 29733 compliance, anonymization, local-only processing.
+The validation data contains no personal data. Any institutional data is processed locally, anonymized and handled under Law N° 29733.
 
-## Caveats and recommendations
-- Results are hardware-specific; bitsandbytes kernels are not bit-exact deterministic.
+## Caveats and Recommendations
+
+Results depend on the hardware used. bitsandbytes kernels are not bit-exact deterministic, so the run-to-run variance is reported instead of exact replication.

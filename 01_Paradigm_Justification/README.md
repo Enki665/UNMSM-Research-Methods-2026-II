@@ -1,3 +1,3 @@
 # 01_Paradigm_Justification
 
-See the versioned file(s) in this folder. Status is tracked in the root README.
+Declaración de justificación del paradigma de investigación (Sesión 1). Se adopta Design Science como paradigma rector y la experimentación positivista como ciclo de rigor para evaluar el artefacto.
