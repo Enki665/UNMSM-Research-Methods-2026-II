@@ -4,7 +4,9 @@ Métodos de Investigación e Integridad Científica en Inteligencia Artificial y
 
 **Doctorando:** Edgar Aldair Quispe Huaman
 
-**Tesis:** Arquitectura de gemelo digital basada en agentes de inteligencia artificial para el monitoreo de la condición de equipos de extracción en minería subterránea peruana.
+**Tesis:** Gemelo digital multiagente para el monitoreo de la condición de equipos de extracción subterránea en empresas mineras peruanas, 2018–2025.
+
+*A multi-agent digital twin for condition monitoring of underground extraction equipment in Peruvian mining companies, 2018–2025.*
 
 ## Contenido
 

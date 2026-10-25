@@ -4,9 +4,9 @@ PhD in Deep Tech · UNMSM · Session 3 · Edgar Aldair Quispe Huaman
 
 ## 01 · Title
 
-A multi-agent digital twin architecture for condition monitoring of underground extraction equipment under intermittent connectivity: load-haul-dump loaders in Peruvian underground mining.
+A multi-agent digital twin for condition monitoring of underground extraction equipment in Peruvian mining companies, 2018–2025.
 
-*Arquitectura de gemelo digital basada en agentes de inteligencia artificial para el monitoreo de la condición de equipos de extracción en minería subterránea peruana.*
+*Gemelo digital multiagente para el monitoreo de la condición de equipos de extracción subterránea en empresas mineras peruanas, 2018–2025.*
 
 ## 02 · Abstract
 
