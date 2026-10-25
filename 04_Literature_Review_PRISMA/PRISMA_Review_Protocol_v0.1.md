@@ -105,3 +105,7 @@ Records are exported from each database in RIS format into Zotero, one collectio
 | Decision layer | Monitoring and prognostics as standalone models | Cooperating agents that connect detection with maintenance planning under crew constraints | Perception, diagnosis and planning agents |
 | Evaluation | Prediction accuracy reported in isolation | Decision utility against maintenance baselines with paired replications | Paired evaluation against reactive and calendar-based policies |
 | Context | Large operations with dense instrumentation | Mid-sized Peruvian operations with heterogeneous fleets | Design principles for partial telemetry |
+
+## 10. Preliminary Search Run
+
+A preliminary open-index run (25 October 2026) identified 73 records from eight queries; after removing 37 non-scholarly records and 12 duplicates, 24 unique records were screened: 3 primary studies were included, 5 reviews were retained as background, 7 were excluded and 9 remain pending. Details, flow diagram and the full search log are in [preliminary_run](preliminary_run/).
