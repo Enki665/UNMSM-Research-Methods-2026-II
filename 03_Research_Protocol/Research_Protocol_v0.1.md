@@ -4,109 +4,88 @@ PhD in Deep Tech · UNMSM · Session 3 · Edgar Aldair Quispe Huaman
 
 ## 01 · Title
 
-A budget-aware method for the efficient adaptation of foundation models through quantization and low-rank adaptation on limited computational infrastructure: the case of Peruvian public institutions.
+A multi-agent digital twin architecture for condition monitoring of underground extraction equipment under intermittent connectivity: load-haul-dump loaders in Peruvian underground mining.
 
-*Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas.*
+*Arquitectura de gemelo digital basada en agentes de inteligencia artificial para el monitoreo de la condición de equipos de extracción en minería subterránea peruana.*
 
 ## 02 · Abstract
 
-Peruvian public institutions that process personal and electoral data must adapt and deploy foundation models locally, because Law N° 29733 restricts sending such data to external cloud services, yet they operate with modest and intermittently available GPU capacity. Parameter-efficient fine-tuning and quantization, combined in QLoRA, make adaptation on a single GPU feasible, but these techniques are proposed and validated in fixed, author-chosen configurations on high-end hardware, leaving practitioners to select quantization precision and adapter rank by trial and error. Grounded in Design Science Research (DSR), this doctoral project designs, builds and evaluates a budget-aware configuration-selection method that, given a memory budget, recommends the quantization precision, adapter rank and target modules that maximize the attainable quality. Evaluation proceeds in two phases: a fractional factorial characterization of the configuration space, replicated over five seeds per configuration, that estimates the quality–memory–latency–energy Pareto frontier; and a confirmatory paired comparison of the proposed method against default LoRA, QLoRA and AdaLoRA configurations on held-out models and Spanish-language tasks. The expected contribution is an improvement-type artifact (Gregor & Hevner, 2013), an empirical trade-off frontier and transferable design principles for resource-constrained adaptation.
+Underground mines in Peru depend on load-haul-dump loaders (scoops) and drilling jumbos whose unplanned failures stop production faces and force day-long corrective repairs. Condition monitoring in these operations remains largely reactive or calendar-based, telemetry is heterogeneous across fleets, and connectivity underground is intermittent. Digital twins reported in the literature typically assume dense sensing and continuous data transmission. Grounded in Design Science Research (DSR), this doctoral project designs, builds and evaluates a digital twin architecture in which cooperating AI agents perceive equipment condition from partial telemetry, diagnose degradation and plan maintenance under crew-capacity constraints, keeping a human in the loop for every intervention. Evaluation proceeds in three stages: model validity of the twin's condition estimates against ground truth in a calibrated simulation testbed and on public run-to-failure benchmarks; decision utility, comparing agent-assisted maintenance with reactive and calendar-based policies in paired replications under common random numbers; and transferability, re-validating the design on a second equipment type and, when access is confirmed, on real fleet telemetry. The expected contribution is an exaptation-type artifact (Gregor & Hevner, 2013), an open simulation testbed and transferable design principles for monitoring underground equipment.
 
 ## 03 · Introduction & Problem Statement ("So What?" Test)
 
-- **The empirical gap:** full fine-tuning requires storing weights, gradients and optimizer states, which places adaptation out of reach for organizations without high-end GPU clusters. LoRA (Hu et al., 2022), post-training quantization (Dettmers et al., 2022; Frantar et al., 2023; Lin et al., 2024) and their combination in QLoRA (Dettmers et al., 2023) reduce this cost, but they are evaluated in fixed configurations on high-end hardware. There is no systematic characterization of how the quality–cost trade-off varies across the configuration space, nor a formal criterion to select a configuration for a given budget (Ding et al., 2023; Zhu et al., 2024; Mao et al., 2025).
-- **Why care ("So What?"):** institutions such as the JNE cannot outsource adaptation to cloud providers for legal reasons and cannot afford exploratory compute. A validated selection method turns adaptation from trial and error into a reproducible decision, enabling local, legally compliant use of foundation models on existing hardware.
+- **The empirical gap:** digital twins for industrial assets are well established in manufacturing (Kritzinger et al., 2018; Tao et al., 2019), and condition-based maintenance has a mature diagnostic and prognostic basis (Jardine et al., 2006). Underground mining equipment, however, operates under intermittent connectivity, heterogeneous brands and partial sensing, conditions under which the assumption of a continuously synchronized twin does not hold.
+- **Why care ("So What?"):** every unplanned failure of a loader underground means a stopped production face, a corrective repair of about a day and maintenance work under pressure in a hazardous environment. A twin that works with the telemetry mines already have, and that recommends rather than executes interventions, offers a deployable path to fewer unplanned stops without new sensor investment.
 
 ## 04 · Literature Review Axes
 
-1. **Parameter-efficient fine-tuning:** adapters (Houlsby et al., 2019), LoRA (Hu et al., 2022), AdaLoRA (Zhang et al., 2023), DoRA (Liu et al., 2024).
-2. **Quantization of large models:** LLM.int8() (Dettmers et al., 2022), GPTQ (Frantar et al., 2023), SmoothQuant (Xiao et al., 2023), AWQ (Lin et al., 2024).
-3. **Quantization combined with adaptation:** QLoRA (Dettmers et al., 2023) as the immediate antecedent.
-4. **Efficiency and sustainability:** Strubell et al. (2019); Schwartz et al. (2020).
-5. **Compute-optimal allocation:** scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022), transferred here from pre-training to adaptation.
+1. **Digital twins:** concept and classification (Grieves & Vickers, 2017; Kritzinger et al., 2018; Tao et al., 2019).
+2. **Condition monitoring and prognostics:** diagnostics, prognostics and condition-based maintenance (Jardine et al., 2006); run-to-failure benchmarks (Saxena et al., 2008).
+3. **Intelligent agents and multi-agent systems:** autonomy, cooperation and decision support (Wooldridge & Jennings, 1995).
+4. **Mining equipment and underground operations:** load-haul-dump loaders, drilling jumbos, connectivity and safety constraints.
+5. **Design science evaluation:** FEDS framework (Venable et al., 2016) and DSR methodology (Peffers et al., 2007).
 
 The systematic review that consolidates these axes is in [04_Literature_Review_PRISMA](../04_Literature_Review_PRISMA/).
 
 ## 05 · Research Questions, Objectives & Hypotheses
 
-**General question:** To what extent does a budget-aware adaptation method based on quantization and low-rank adaptation improve performance on limited computational infrastructure, compared with reference adaptation strategies?
+**General question:** To what extent does a multi-agent digital twin architecture improve the condition monitoring and maintenance of underground extraction equipment under intermittent connectivity, compared with reactive and calendar-based maintenance?
 
-**General objective:** Develop and validate a budget-aware adaptation method that improves the quality–cost trade-off on limited infrastructure with respect to reference strategies.
+**General objective:** Design, build and evaluate a multi-agent digital twin architecture for condition monitoring of underground extraction equipment.
 
 | | Specific question | Specific objective | Hypothesis |
 |---|---|---|---|
-| SO1 | What is the effect of quantization precision on quality, memory and latency? | Characterize experimentally the effect of quantization precision. | HE1: precision has a significant effect on quality and memory, with a threshold below which degradation is no longer bounded. |
-| SO2 | How does the optimal rank and target-module configuration vary with the memory budget? | Determine the functional relation between memory budget and optimal adapter configuration. | HE2: the optimal configuration depends significantly on the memory budget and can be characterized by an allocation function. |
-| SO3 | Does automatic configuration selection improve the performance–cost ratio over default configurations? | Design an automatic selection procedure from the empirical characterization. | HE3: the procedure achieves a significantly better performance–cost ratio than default configurations under the same budget. |
-| SO4 | Does the method generalize across model families, task domains and hardware classes? | Validate the method against reference strategies on held-out tasks, models and hardware. | HE4: the improvement remains significant across model families, domains and hardware classes. |
+| SO1 | How faithfully can the twin estimate equipment condition from partial, intermittently transmitted telemetry? | Validate the fidelity of the twin's condition estimates against ground truth. | HE1: the twin detects degradation before functional failure in a significantly larger share of cases than fixed-threshold alarms. |
+| SO2 | Does agent-assisted maintenance improve availability and reduce unplanned failures and cost? | Evaluate the decision utility of the twin against reactive and calendar-based policies. | HE2: agent-assisted maintenance significantly reduces unplanned failures and increases availability compared with both baselines, at a maintenance cost not greater than calendar-based maintenance. |
+| SO3 | How does the twin's utility change as connectivity degrades? | Characterize the sensitivity of the twin to the probability of data transmission. | HE3: the twin's advantage over calendar-based maintenance remains significant down to a minimum connectivity level that can be identified empirically. |
+| SO4 | Do the design principles transfer across equipment types and data sources? | Re-validate the architecture on a second equipment type and on real or public run-to-failure data. | HE4: the improvement remains significant when the architecture is applied to a second equipment type. |
 
-**Construct definition:** performance is a vector (quality, peak memory, latency, energy). A configuration improves on another when it Pareto-dominates it; scalar comparisons use quality per GiB of peak memory and quality per Wh.
-
-**Baselines:** LoRA with its original default configuration, QLoRA with its original default configuration, and AdaLoRA.
+**Baselines:** reactive maintenance (repair on failure) and calendar-based preventive maintenance at a fixed interval.
 
 ## 06 · Methodology
 
 - **Paradigm:** Design Science (Hevner et al., 2004), with positivist experimentation as the rigor cycle.
-- **Process:** DSR methodology of Peffers et al. (2007): problem identification, objectives, design and development, demonstration, evaluation and communication.
-- **Unit of analysis:** the training run, defined as the adaptation of one model under one configuration followed by evaluation on a test set.
-- **Phase I, characterization:** fractional factorial design over model family (1B–13B open models), quantization precision (16, 8, 4 and 3 bits), adapter rank (2–64), target modules and task, with five seeds per configuration and randomized execution order. Response-surface methodology and Pareto-frontier analysis.
-- **Phase II, confirmatory evaluation:** the selection method against the baselines on tasks and models not used in Phase I, under identical memory budgets.
-- **Statistical analysis:** paired comparisons across seeds, tasks and models using linear mixed-effects models (seed and task as random effects) and the Wilcoxon signed-rank test on pooled pairs, with bootstrap 95% confidence intervals, effect sizes and Holm correction for multiple comparisons. Because five paired seeds alone cannot reach p < 0.05 in a two-sided Wilcoxon test, inference pools pairs across tasks and models.
-- **Measurement:** accuracy, macro-F1 and perplexity; peak memory during training and inference (GiB); latency per query after warm-up (ms); throughput (tokens/s); energy from GPU telemetry (Wh).
-- **Reproducibility:** pinned library versions, fixed seeds, full configuration and environment logged per run, public code in [05_Reproducible_ML_Pipeline](../05_Reproducible_ML_Pipeline/).
+- **Process:** DSR methodology of Peffers et al. (2007); evaluation strategy following FEDS (Venable et al., 2016): formative, artificial evaluation in simulation first, then summative, naturalistic evaluation with real telemetry.
+- **Artifact:** three cooperating agents. A perception agent fuses intermittent telemetry into a condition state; a diagnosis agent scores deviations from healthy behavior (Mahalanobis distance with exponential smoothing in the pilot); a planning agent prioritizes interventions under crew-capacity constraints. Every intervention is recommended to a human planner.
+- **Testbed:** a fleet simulator with stochastic degradation, duty cycles, sensor noise and intermittent connectivity, calibrated against public run-to-failure data.
+- **Unit of analysis:** one simulation replication of the fleet under one policy. Replications use common random numbers, so policies are compared on identical degradation, duty and connectivity trajectories.
+- **Design:** 30 paired replications per scenario; factors in later stages: connectivity probability, fleet heterogeneity and crew capacity.
+- **Statistical analysis:** Wilcoxon signed-rank tests on paired replications, rank-biserial effect sizes, bootstrap 95% confidence intervals and Holm correction for multiple comparisons.
+- **Reproducibility:** fixed seeds, configuration and environment logged per run, public code in [05_Reproducible_ML_Pipeline](../05_Reproducible_ML_Pipeline/).
+
+**Pilot result (simulation, 30 paired replications, 10 loaders, 90 days):** the twin eliminated unplanned failures (0.00 vs. 25.83 reactive and 0.73 calendar-based) and raised availability over reactive maintenance (0.987 vs. 0.972), but intervened more often than the calendar-based policy, at a higher maintenance cost (115.3 vs. 85.9 relative units) and slightly lower availability (0.987 vs. 0.990). The pilot therefore supports the reduction of unplanned failures and identifies the calibration of the alarm threshold as the next design iteration.
 
 ## 07 · Ethics, Governance & Data Protection
 
-- **Scientific integrity:** compliance with CONCYTEC's National Code of Scientific Integrity; pre-specified hypotheses and analysis plan to prevent p-hacking, HARKing and selective reporting; all runs reported, including failed ones.
-- **Data protection:** Phases I and II use open models and public benchmarks without personal data. Any institutional data is processed only with written authorization, anonymized before analysis, processed locally, and handled under Law N° 29733 and its Regulation.
+- **Scientific integrity:** compliance with CONCYTEC's National Code of Scientific Integrity; hypotheses and analysis plan specified before each evaluation stage; all replications reported, including unfavorable results such as the pilot's higher maintenance cost.
+- **Data protection:** simulated and public data contain no personal data. Real fleet telemetry may include operator identifiers; these are pseudonymized before analysis and handled under Law N° 29733 and its Regulation, with a data-sharing agreement signed with the partner company.
+- **Occupational safety:** the twin operates in recommendation mode with a human planner in the loop, consistent with the occupational health and safety regulation for mining (D.S. N° 024-2016-EM and its amendments).
 - **AI regulation:** alignment with Law N° 31814, which promotes the use of artificial intelligence in Peru, and its Regulation.
-- **Fairness:** disaggregated evaluation to test whether low-bit quantization degrades Spanish-language performance more than English performance.
-- **Sustainability:** energy consumption reported as an outcome variable.
 - **AI-use declaration:** generative AI was used for structuring, preliminary drafting and code scaffolding; methodological decisions are the author's own.
 
 ## 08 · Expected Results
 
-1. A validated budget-aware configuration-selection method released as open-source software.
-2. An empirical quality–memory–latency–energy Pareto frontier for quantized low-rank adaptation on limited hardware.
-3. Transferable design principles for resource-constrained adaptation, published in target venues (MLSys, TMLR, EMNLP Findings).
+1. A validated multi-agent digital twin architecture for underground extraction equipment, released as open-source software.
+2. An open simulation testbed for evaluating maintenance policies under intermittent connectivity.
+3. Evidence on fidelity and decision utility, and transferable design principles published in target venues (IEEE TII, Reliability Engineering & System Safety, DESRIST).
 
-## 09 · Timeline & Budget
+## 09 · Timeline & Budget (36 months)
 
-| Activity | S1 | S2 | S3 | S4 | S5 | S6 | S7 | S8 |
-|---|---|---|---|---|---|---|---|---|
-| Systematic literature review | X | X | | | | | | |
-| Project formulation and approval | X | X | | | | | | |
-| Experimental environment | | X | X | | | | | |
-| Phase I: characterization | | | X | X | | | | |
-| Phase I statistical analysis | | | | X | X | | | |
-| First paper | | | | | X | | | |
-| Design of the selection method | | | | | X | X | | |
-| Phase II: confirmatory validation | | | | | | X | X | |
-| Second paper | | | | | | | X | |
-| Thesis writing | | | | | | | X | X |
-| Defense | | | | | | | | X |
-
-- **Risk buffer:** GPU availability, slower-than-planned Phase I and ethics approval if institutional data is added.
-- **Budget:** S/ 47,520 (workstation, cloud compute, storage, bibliography, dissemination, editing and a 10% contingency), financed through UNMSM competitive funds and national science and technology calls.
+- **Months 1–6:** protocol refinement, systematic review, ethics committee approval and negotiation of a data-sharing agreement with a mining company.
+- **Months 7–16:** simulator calibration with public run-to-failure data, agent design and model validity evaluation (SO1).
+- **Months 17–26:** decision utility and connectivity sensitivity experiments (SO2, SO3); first publication.
+- **Months 27–36:** transfer to a second equipment type and naturalistic validation with real telemetry (SO4), thesis writing and defense.
+- **Budget:** cloud and local compute, edge hardware for a field prototype, article processing charges and conference participation, editing services and a 10% contingency, financed through UNMSM competitive funds and national science and technology calls.
 
 ## 10 · Core Bibliography
 
-- Dettmers, T., Lewis, M., Belkada, Y., & Zettlemoyer, L. (2022). LLM.int8(): 8-bit matrix multiplication for transformers at scale. *NeurIPS 35*.
-- Dettmers, T., Pagnoni, A., Holtzman, A., & Zettlemoyer, L. (2023). QLoRA: Efficient finetuning of quantized LLMs. *NeurIPS 36*.
-- Ding, N., et al. (2023). Parameter-efficient fine-tuning of large-scale pre-trained language models. *Nature Machine Intelligence, 5*(3), 220–235.
-- Frantar, E., Ashkboos, S., Hoefler, T., & Alistarh, D. (2023). GPTQ: Accurate post-training quantization for generative pre-trained transformers. *ICLR 2023*.
+- Grieves, M., & Vickers, J. (2017). Digital twin: Mitigating unpredictable, undesirable emergent behavior in complex systems. In F.-J. Kahlen, S. Flumerfelt, & A. Alves (Eds.), *Transdisciplinary perspectives on complex systems* (pp. 85–113). Springer.
 - Gregor, S., & Hevner, A. R. (2013). Positioning and presenting design science research for maximum impact. *MIS Quarterly, 37*(2), 337–355.
 - Hevner, A. R., March, S. T., Park, J., & Ram, S. (2004). Design science in information systems research. *MIS Quarterly, 28*(1), 75–105.
-- Hoffmann, J., et al. (2022). Training compute-optimal large language models. *arXiv:2203.15556*.
-- Houlsby, N., et al. (2019). Parameter-efficient transfer learning for NLP. *ICML 2019*, 2790–2799.
-- Hu, E. J., et al. (2022). LoRA: Low-rank adaptation of large language models. *ICLR 2022*.
-- Kaplan, J., et al. (2020). Scaling laws for neural language models. *arXiv:2001.08361*.
-- Lin, J., et al. (2024). AWQ: Activation-aware weight quantization for on-device LLM compression and acceleration. *MLSys 2024*.
-- Liu, S.-Y., et al. (2024). DoRA: Weight-decomposed low-rank adaptation. *ICML 2024*.
-- Mao, Y., et al. (2025). A survey on LoRA of large language models. *Frontiers of Computer Science, 19*(7), 197605.
+- Jardine, A. K. S., Lin, D., & Banjevic, D. (2006). A review on machinery diagnostics and prognostics implementing condition-based maintenance. *Mechanical Systems and Signal Processing, 20*(7), 1483–1510.
+- Kritzinger, W., Karner, M., Traar, G., Henjes, J., & Sihn, W. (2018). Digital twin in manufacturing: A categorical literature review and classification. *IFAC-PapersOnLine, 51*(11), 1016–1022.
 - Peffers, K., Tuunanen, T., Rothenberger, M. A., & Chatterjee, S. (2007). A design science research methodology for information systems research. *Journal of Management Information Systems, 24*(3), 45–77.
-- Schwartz, R., Dodge, J., Smith, N. A., & Etzioni, O. (2020). Green AI. *Communications of the ACM, 63*(12), 54–63.
-- Strubell, E., Ganesh, A., & McCallum, A. (2019). Energy and policy considerations for deep learning in NLP. *ACL 2019*, 3645–3650.
-- Xiao, G., et al. (2023). SmoothQuant: Accurate and efficient post-training quantization for large language models. *ICML 2023*.
-- Zhang, Q., et al. (2023). AdaLoRA: Adaptive budget allocation for parameter-efficient fine-tuning. *ICLR 2023*.
-- Zhu, X., Li, J., Liu, Y., Ma, C., & Wang, W. (2024). A survey on model compression for large language models. *TACL, 12*, 1556–1577.
+- Saxena, A., Goebel, K., Simon, D., & Eklund, N. (2008). Damage propagation modeling for aircraft engine run-to-failure simulation. *International Conference on Prognostics and Health Management*.
+- Tao, F., Zhang, H., Liu, A., & Nee, A. Y. C. (2019). Digital twin in industry: State-of-the-art. *IEEE Transactions on Industrial Informatics, 15*(4), 2405–2415.
+- Venable, J., Pries-Heje, J., & Baskerville, R. (2016). FEDS: A framework for evaluation in design science research. *European Journal of Information Systems, 25*(1), 77–89.
+- Wooldridge, M., & Jennings, N. R. (1995). Intelligent agents: Theory and practice. *The Knowledge Engineering Review, 10*(2), 115–152.

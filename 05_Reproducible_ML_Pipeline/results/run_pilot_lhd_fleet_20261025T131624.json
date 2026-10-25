@@ -1,0 +1,81 @@
+{
+  "config": {
+    "experiment": "pilot_lhd_fleet",
+    "fleet": {
+      "n_units": 10,
+      "horizon_hours": 2160,
+      "warmup_hours": 168,
+      "mean_duty": 0.7
+    },
+    "degradation": {
+      "mean_life_hours": 700,
+      "gamma_shape": 2.0,
+      "unit_heterogeneity_sigma": 0.2
+    },
+    "sensors": {
+      "names": [
+        "engine_temp_c",
+        "hydraulic_pressure_bar",
+        "vibration_rms_mm_s",
+        "oil_temp_c",
+        "fuel_rate_l_h"
+      ],
+      "base": [
+        88.0,
+        180.0,
+        2.5,
+        75.0,
+        22.0
+      ],
+      "duty_effect": [
+        6.0,
+        25.0,
+        0.8,
+        5.0,
+        8.0
+      ],
+      "degradation_effect": [
+        14.0,
+        -35.0,
+        4.5,
+        12.0,
+        6.0
+      ],
+      "noise_sd": [
+        1.5,
+        6.0,
+        0.35,
+        1.2,
+        1.5
+      ]
+    },
+    "connectivity": {
+      "p_connected": 0.6
+    },
+    "maintenance": {
+      "corrective_hours": 24,
+      "preventive_hours": 6,
+      "crew_capacity": 2,
+      "corrective_cost": 10.0,
+      "preventive_cost": 2.0,
+      "unnecessary_health_threshold": 0.6
+    },
+    "policies": {
+      "preventive_interval_hours": 450,
+      "twin_agent": {
+        "alarm_quantile": 0.995,
+        "ewma_alpha": 0.2,
+        "consecutive_alarms": 3
+      }
+    },
+    "replications": 30,
+    "base_seed": 1000
+  },
+  "environment": {
+    "python": "3.13.17",
+    "numpy": "2.5.3",
+    "pandas": "3.0.5",
+    "git_commit": "beab3aaa443ae80f7629e24bada5aef932b36d7d"
+  },
+  "n_rows": 90
+}

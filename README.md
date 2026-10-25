@@ -4,19 +4,19 @@ Métodos de Investigación e Integridad Científica en Inteligencia Artificial y
 
 **Doctorando:** Edgar Aldair Quispe Huaman
 
-**Tesis:** Método de adaptación eficiente de modelos fundacionales basado en cuantización y ajuste de bajo rango para la mejora del desempeño en infraestructuras computacionales limitadas.
+**Tesis:** Arquitectura de gemelo digital basada en agentes de inteligencia artificial para el monitoreo de la condición de equipos de extracción en minería subterránea peruana.
 
 ## Contenido
 
 | Carpeta | Descripción |
 |---|---|
-| [01_Paradigm_Justification](01_Paradigm_Justification/) | Declaración de justificación del paradigma de investigación: Design Science con evaluación experimental positivista. |
-| [02_Method_Fit_Matrix](02_Method_Fit_Matrix/) | Matriz de ajuste de método (E.D.F.C.V.) con regla de eliminación, ponderaciones y método ganador. |
-| [03_Research_Protocol](03_Research_Protocol/) | Esquema del protocolo de investigación v0.1 con sus diez componentes. |
-| [04_Literature_Review_PRISMA](04_Literature_Review_PRISMA/) | Protocolo de revisión sistemática PRISMA 2020, cadenas de búsqueda, criterios de elegibilidad y análisis de brechas. |
-| [05_Reproducible_ML_Pipeline](05_Reproducible_ML_Pipeline/) | Pipeline reproducible de adaptación con cuantización y LoRA, con registro de calidad, memoria, latencia y energía por corrida. |
-| [06_Reproducibility_Audit_and_Best_Practices](06_Reproducibility_Audit_and_Best_Practices/) | Auditoría de reproducibilidad del artículo QLoRA y buenas prácticas aplicadas al pipeline propio. |
-| [07_ModelCard_Datasheet_Scorecard](07_ModelCard_Datasheet_Scorecard/) | Model Card, Datasheet for Datasets y scorecard de reproducibilidad e IA responsable. |
+| [01_Paradigm_Justification](01_Paradigm_Justification/) | Declaración de justificación del paradigma: Design Science como paradigma rector y experimentación positivista como ciclo de rigor. |
+| [02_Method_Fit_Matrix](02_Method_Fit_Matrix/) | Matriz de ajuste de método (E.D.F.C.V.) que compara Design Science, estudio de simulación y estudio de caso, con regla de eliminación y método ganador. |
+| [03_Research_Protocol](03_Research_Protocol/) | Esquema del protocolo de investigación v0.1 con sus diez componentes y el resultado del piloto. |
+| [04_Literature_Review_PRISMA](04_Literature_Review_PRISMA/) | Protocolo de revisión sistemática PRISMA 2020 sobre gemelos digitales y agentes de IA para equipos mineros, con análisis de brechas. |
+| [05_Reproducible_ML_Pipeline](05_Reproducible_ML_Pipeline/) | Simulador de flota subterránea, agentes del gemelo digital y análisis estadístico pareado, con resultados del piloto. |
+| [06_Reproducibility_Audit_and_Best_Practices](06_Reproducibility_Audit_and_Best_Practices/) | Auditoría de reproducibilidad de un artículo de referencia en vida útil remanente y buenas prácticas aplicadas al pipeline propio. |
+| [07_ModelCard_Datasheet_Scorecard](07_ModelCard_Datasheet_Scorecard/) | Model Card de los agentes, Datasheet de la telemetría sintética y scorecard de reproducibilidad e IA responsable. |
 
 ## Declaración de uso de IA
 
