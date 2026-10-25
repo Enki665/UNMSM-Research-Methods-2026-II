@@ -139,7 +139,7 @@ def build_model(cfg: dict):
     elif bits == 8:
         quant_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_skip_modules=["score", "classifier"])
     elif bits != 16:
-        raise NotImplementedError(f"{bits}-bit requires a GPTQ/AWQ backend (TODO).")
+        raise NotImplementedError(f"{bits}-bit requires a GPTQ/AWQ backend.")
 
     tokenizer = AutoTokenizer.from_pretrained(cfg["model"])
     if tokenizer.pad_token is None:
