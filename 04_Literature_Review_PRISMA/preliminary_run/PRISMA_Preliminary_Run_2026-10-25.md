@@ -4,7 +4,7 @@ PhD in Deep Tech · UNMSM · Session 4 · Edgar Aldair Quispe Huaman
 
 ## 1. Scope of This Run
 
-A preliminary, open-index run executed to test the search blocks and anticipate the gap analysis before the full search in Scopus, Web of Science, IEEE Xplore, ScienceDirect, OnePetro and SME. Eight queries derived from the four search blocks were run on an open web index; every retrieved link is logged in [search_log.csv](search_log.csv) with its source type, decision and reason.
+A preliminary, open-index run executed to test the search blocks and anticipate the gap analysis before the full search in Scopus, Web of Science, IEEE Xplore, ScienceDirect, OnePetro and SME. Eight queries derived from the four search blocks were run on an open web index; every retrieved link is logged in [search_log.csv](search_log.csv) with its source type, decision and reason, and all 73 records, duplicates included, are listed in APA 7 format in [References_APA_73_records.md](References_APA_73_records.md).
 
 | ID | Query | Blocks |
 |---|---|---|
